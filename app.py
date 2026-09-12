@@ -580,62 +580,74 @@ TYRE_MODEL = {
 
     "C1": {
         "display": "Hard",
-        "offset": 0.65,
+        "offset": 0.42,
         "peak_start": 3,
-        "peak_end": 18,
-        "critical_lap": 40,
-        "deg_rate": 0.040,
-        "late_rate": 0.075
+        "peak_end": 20,
+        "critical_lap": 42,
+        "deg_rate": 0.032,
+        "late_rate": 0.060,
+        "min_laps": 24,
+        "max_laps": 42
     },
 
     "C2": {
         "display": "Hard",
-        "offset": 0.45,
+        "offset": 0.30,
         "peak_start": 3,
-        "peak_end": 16,
-        "critical_lap": 36,
-        "deg_rate": 0.045,
-        "late_rate": 0.080
+        "peak_end": 18,
+        "critical_lap": 38,
+        "deg_rate": 0.036,
+        "late_rate": 0.065,
+        "min_laps": 22,
+        "max_laps": 38
     },
 
     "C3": {
         "display": "Medium",
-        "offset": 0.25,
+        "offset": 0.20,
         "peak_start": 2,
-        "peak_end": 13,
-        "critical_lap": 31,
-        "deg_rate": 0.050,
-        "late_rate": 0.085
+        "peak_end": 14,
+        "critical_lap": 32,
+        "deg_rate": 0.045,
+        "late_rate": 0.078,
+        "min_laps": 18,
+        "max_laps": 33
     },
 
     "C4": {
         "display": "Medium",
         "offset": 0.05,
         "peak_start": 2,
-        "peak_end": 11,
-        "critical_lap": 27,
-        "deg_rate": 0.055,
-        "late_rate": 0.090
+        "peak_end": 12,
+        "critical_lap": 29,
+        "deg_rate": 0.050,
+        "late_rate": 0.082,
+        "min_laps": 17,
+        "max_laps": 31
     },
 
     "C5": {
         "display": "Soft",
-        "offset": -0.25,
+        "offset": -0.22,
         "peak_start": 2,
         "peak_end": 8,
-        "critical_lap": 19,
-        "deg_rate": 0.070,
-        "late_rate": 0.105
+        "critical_lap": 18,
+        "deg_rate": 0.082,
+        "late_rate": 0.125,
+        "min_laps": 9,
+        "max_laps": 20
     },
 
     "C6": {
         "display": "Soft",
-        "offset": -0.40,
+        "offset": -0.32,
         "peak_start": 2,
         "peak_end": 7,
-        "critical_lap": 16,
-        "deg_rate": 0.080,
-        "late_rate": 0.115
+        "critical_lap": 15,
+        "deg_rate": 0.092,
+        "late_rate": 0.135,
+        "min_laps": 8,
+        "max_laps": 18
     },
 
     "INT": {
@@ -725,26 +737,45 @@ PIRELLI_2025 = {
 # DISPLAY HELPERS
 # ============================================================
 
-def tyre_name(compound):
+def tyre_role(compound, country=None):
+
+    if compound == "INT":
+        return "Intermediate"
+
+    # Pirelli nominates three dry compounds for each weekend.
+    # Within that nominated set, the hardest compound is the
+    # race Hard, the middle compound is Medium, and the softest
+    # compound is Soft. This keeps the tyre labels correct for
+    # every 2025 race weekend.
+    if country in PIRELLI_2025:
+        nominated = PIRELLI_2025[country]
+        if compound in nominated:
+            role_index = nominated.index(compound)
+            return ["Hard", "Medium", "Soft"][role_index]
 
     return TYRE_MODEL[compound]["display"]
 
 
-def tyre_display_with_code(compound):
+def tyre_name(compound, country=None):
+
+    return tyre_role(compound, country)
+
+
+def tyre_display_with_code(compound, country=None):
 
     if compound == "INT":
         return "Intermediate"
 
     return (
-        f"{TYRE_MODEL[compound]['display']} "
+        f"{tyre_role(compound, country)} "
         f"({compound})"
     )
 
 
-def strategy_display(strategy):
+def strategy_display(strategy, country=None):
 
     return " → ".join(
-        tyre_display_with_code(x)
+        tyre_display_with_code(x, country)
         for x in strategy
     )
 
@@ -1092,38 +1123,84 @@ def generate_dry_strategies(country):
 # STINT LENGTHS
 # ============================================================
 
-def create_stints(
-    total_laps,
-    number_of_stops
-):
+def create_stints(total_laps, compounds):
+    """Create realistic candidate stint lengths for a compound sequence.
 
-    stint_count = (
-        number_of_stops + 1
-    )
+    Unlike the old equal-split model, each compound gets a different
+    expected race life. Hard tyres naturally receive longer stints while
+    Soft tyres are prevented from becoming unrealistic 20+ lap race tyres.
+    """
 
-    base = (
-        total_laps
-        // stint_count
-    )
+    if not compounds:
+        return []
 
-    remainder = (
-        total_laps
-        % stint_count
-    )
+    # Expected useful race life used only to distribute laps. The actual
+    # lap-time model still decides whether a candidate is competitive.
+    target_life = {
+        compound: TYRE_MODEL[compound].get("target_laps",
+                                             (TYRE_MODEL[compound].get("min_laps", 10)
+                                              + TYRE_MODEL[compound].get("max_laps", 30)) / 2)
+        for compound in compounds
+    }
 
-    lengths = []
+    total_target = sum(target_life.values())
+    raw = [total_laps * target_life[c] / total_target for c in compounds]
+    lengths = [max(1, int(round(x))) for x in raw]
 
-    for i in range(stint_count):
-
-        length = base
-
-        if i < remainder:
-
-            length += 1
-
-        lengths.append(length)
+    # Correct rounding while keeping the total exactly equal to race laps.
+    while sum(lengths) < total_laps:
+        idx = max(range(len(lengths)), key=lambda i: target_life[compounds[i]] - lengths[i])
+        lengths[idx] += 1
+    while sum(lengths) > total_laps:
+        candidates = [i for i, n in enumerate(lengths) if n > 1]
+        idx = max(candidates, key=lambda i: lengths[i] - target_life[compounds[i]])
+        lengths[idx] -= 1
 
     return lengths
+
+
+def generate_stint_length_candidates(total_laps, compounds):
+    """Generate deterministic, realistic alternatives around the target split."""
+
+    base = create_stints(total_laps, compounds)
+    candidates = {tuple(base)}
+
+    mins = [TYRE_MODEL[c].get("min_laps", 1) for c in compounds]
+    maxs = [TYRE_MODEL[c].get("max_laps", total_laps) for c in compounds]
+
+    # Move a small number of laps from one stint to another. This lets the
+    # optimizer discover long-Hard/short-Soft strategies without brute-forcing
+    # thousands of combinations.
+    shifts = (-6, -4, -2, 2, 4, 6)
+
+    for i in range(len(compounds)):
+        for j in range(len(compounds)):
+            if i == j:
+                continue
+            for shift in shifts:
+                trial = base.copy()
+                trial[i] += shift
+                trial[j] -= shift
+                if all(mins[k] <= trial[k] <= maxs[k] for k in range(len(trial))) and sum(trial) == total_laps:
+                    candidates.add(tuple(trial))
+
+    # For 3- and 4-stint strategies, also allow two independent small moves.
+    if len(compounds) >= 3:
+        for i in range(len(compounds)):
+            for j in range(len(compounds)):
+                if i == j:
+                    continue
+                for k in range(len(compounds)):
+                    if k in (i, j):
+                        continue
+                    trial = base.copy()
+                    trial[i] += 4
+                    trial[j] -= 2
+                    trial[k] -= 2
+                    if all(mins[x] <= trial[x] <= maxs[x] for x in range(len(trial))) and sum(trial) == total_laps:
+                        candidates.add(tuple(trial))
+
+    return [list(x) for x in candidates]
 
 
 # ============================================================
@@ -1134,7 +1211,8 @@ def simulate_dry_strategy(
     country,
     strategy,
     car_class,
-    starting_position
+    starting_position,
+    stint_lengths=None
 ):
 
     race = RACE_DEFAULTS[country]
@@ -1143,12 +1221,11 @@ def simulate_dry_strategy(
         strategy["compounds"]
     )
 
-    stint_lengths = (
-        create_stints(
+    if stint_lengths is None:
+        stint_lengths = create_stints(
             race["laps"],
-            len(compounds) - 1
+            compounds
         )
-    )
 
     total_time = 0.0
 
@@ -1207,7 +1284,7 @@ def simulate_dry_strategy(
                 {
                     "Lap": current_lap,
                     "Tyre": tyre_name(
-                        compound
+                        compound, country
                     ),
                     "Compound": compound,
                     "Tyre Age": age,
@@ -1293,16 +1370,29 @@ def optimize_dry_strategy(
 
     for strategy in strategies:
 
-        result = (
-            simulate_dry_strategy(
+        candidates = generate_stint_length_candidates(
+            RACE_DEFAULTS[country]["laps"],
+            strategy["compounds"]
+        )
+
+        for stint_lengths in candidates:
+            # Reject a compound sequence if any stint is outside its
+            # realistic race-life envelope.
+            valid = all(
+                TYRE_MODEL[c]["min_laps"] <= length <= TYRE_MODEL[c]["max_laps"]
+                for c, length in zip(strategy["compounds"], stint_lengths)
+            )
+            if not valid:
+                continue
+
+            result = simulate_dry_strategy(
                 country,
                 strategy,
                 car_class,
-                starting_position
+                starting_position,
+                stint_lengths=stint_lengths
             )
-        )
-
-        results.append(result)
+            results.append(result)
 
     results.sort(
         key=lambda x:
@@ -1649,12 +1739,8 @@ if not run_simulation:
     )
 
     tyre_text = " • ".join(
-        sorted(
-            set(
-                tyre_name(x)
-                for x in available
-            )
-        )
+        tyre_display_with_code(x, country)
+        for x in available
     )
 
     st.markdown(
@@ -1663,6 +1749,10 @@ if not run_simulation:
 
             <b>2025 nominated dry tyres:</b>
             &nbsp; {tyre_text}
+
+            <br><br>
+
+            <b>Weekend tyre roles:</b> Hard → Medium → Soft
 
             <br><br>
 
@@ -1764,7 +1854,7 @@ if run_simulation:
 
         st.markdown(
             f"## 🏎️ "
-            f"{strategy_display(best['strategy']['compounds'])}"
+            f"{strategy_display(best['strategy']['compounds'], country)}"
         )
 
         st.markdown(
@@ -1826,7 +1916,8 @@ if run_simulation:
 
                     "Strategy":
                         strategy_display(
-                            result["strategy"]["compounds"]
+                            result["strategy"]["compounds"],
+                            country
                         ),
 
                     "Pit Stops":
@@ -1881,7 +1972,7 @@ if run_simulation:
                 )
 
                 st.markdown(
-                    f"## {tyre_name(compound)}"
+                    f"## {tyre_name(compound, country)}"
                 )
 
                 st.caption(
