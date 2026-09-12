@@ -1,4 +1,4 @@
-```python
+
 import streamlit as st
 import pandas as pd
 
@@ -3094,12 +3094,7 @@ with st.expander(
         be interpreted as official F1 performance measurements.
         """
     )
-
-
-# ============================================================
 # FOOTER
-# ============================================================
-
 st.markdown(
     """
     <div class="footer">
@@ -3107,9 +3102,7 @@ st.markdown(
         F1 Race Strategy Simulator •
         2025 Data •
         Python + Pandas + Streamlit
-
     </div>
     """,
     unsafe_allow_html=True
 )
-```
