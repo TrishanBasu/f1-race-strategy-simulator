@@ -8,7 +8,6 @@ A Formula 1 race strategy simulator built with Python, Pandas and Streamlit.
 - Select a 2025 Grand Prix
 - Choose starting position
 - Choose car performance class
-- Simulate dry and wet race conditions
 - Simulate tyre degradation for:
   - C1 Hard
   - C2 Hard
@@ -19,7 +18,7 @@ A Formula 1 race strategy simulator built with Python, Pandas and Streamlit.
   - Intermediate
 - Compare different pit-stop strategies
 - Automatically find the fastest simulated strategy
-- Simulate different rain windows
+- Rain-duration time adjustment
 - View lap-by-lap race performance
 - Uses previous-lap pace smoothing
 
@@ -36,7 +35,5 @@ Rain scenarios are representative deterministic scenarios, not predictions of ac
 - Python
 - Pandas
 - Streamlit
-
-## Run
-
-The application can be deployed using Streamlit Community Cloud.
+Live Demo
+https://f1-race-strategy-simulator-3azkegxj8twh7pjpj6xy8k.streamlit.app/
