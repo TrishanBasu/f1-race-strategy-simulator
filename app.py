@@ -974,52 +974,88 @@ def calculate_lap_time(
 ):
 
     race = RACE_DEFAULTS[country]
-
     tyre = TYRE_MODEL[compound]
-
     base = race["pace"]
 
-    car_delta = (
-        CLASS_DATA[car_class]["pace_delta"]
+    car_delta = CLASS_DATA[car_class]["pace_delta"]
+
+    # Weekend role drives the main dry-pace gap. The same physical C-code
+    # can be Hard at one race and Soft at another.
+    if compound == "INT":
+        tyre_delta = tyre["offset"]
+    else:
+        role = get_compound_role_index(country, compound)
+        role_delta = {
+            0: 0.20,
+            1: 0.00,
+            2: -0.40
+        }[role]
+        physical_adjustment = {
+            "C1": 0.04,
+            "C2": 0.02,
+            "C3": 0.00,
+            "C4": -0.02,
+            "C5": -0.04,
+            "C6": -0.06
+        }.get(compound, 0.0)
+        tyre_delta = role_delta + physical_adjustment
+
+    degradation = calculate_tyre_degradation(
+        compound,
+        tyre_age,
+        race["stress"]
     )
 
-    tyre_delta = tyre["offset"]
+    if compound != "INT":
+        role_deg_factor = {
+            0: 0.90,
+            1: 1.00,
+            2: 1.25
+        }[get_compound_role_index(country, compound)]
+        degradation *= role_deg_factor
 
-    degradation = (
-        calculate_tyre_degradation(
-            compound,
-            tyre_age,
-            race["stress"]
-        )
-    )
+    # Universal role-aware overuse penalty. It accelerates progressively
+    # after the tyre's useful race window instead of imposing circuit-specific
+    # rules. This keeps Soft useful for aggressive short stints but expensive
+    # when stretched too far.
+    overuse_penalty = 0.0
+    if compound != "INT":
+        role = get_compound_role_index(country, compound)
+        stress = race["stress"]
+
+        if role == 0:
+            useful_age = tyre["peak_end"] + 0.65 * (tyre["critical_lap"] - tyre["peak_end"])
+            rate = 0.010
+        elif role == 1:
+            useful_age = tyre["peak_end"] + 0.52 * (tyre["critical_lap"] - tyre["peak_end"])
+            rate = 0.016
+        else:
+            useful_age = tyre["peak_end"] + 0.30 * (tyre["critical_lap"] - tyre["peak_end"])
+            rate = 0.180
+
+        if tyre_age > useful_age:
+            extra = tyre_age - useful_age
+            stress_factor = 0.85 + 0.30 * stress
+            overuse_penalty = rate * (extra ** 1.55) * stress_factor
 
     rain_delta = 0.0
 
-    # Intermediate works best in wet conditions.
     if wet:
-
         if compound == "INT":
-
             rain_delta = -17.5
-
         else:
-
-            rain_delta = (
-                10.0
-                + tyre_age * 0.08
-            )
+            rain_delta = 10.0 + tyre_age * 0.08
 
     lap_time = (
         base
         + car_delta
         + tyre_delta
         + degradation
+        + overuse_penalty
         + rain_delta
     )
 
-    # Previous-lap smoothing.
     if previous_lap is not None:
-
         lap_time = (
             0.85 * lap_time
             + 0.15 * previous_lap
@@ -1123,56 +1159,117 @@ def generate_dry_strategies(country):
 # STINT LENGTHS
 # ============================================================
 
-def create_stints(total_laps, compounds):
-    """Create realistic candidate stint lengths for a compound sequence.
+def get_compound_role_index(country, compound):
+    """Return the weekend role: 0=Hard, 1=Medium, 2=Soft."""
+    if compound == "INT":
+        return None
+    nominated = PIRELLI_2025.get(country, [])
+    if compound in nominated:
+        return nominated.index(compound)
+    return 1
 
-    Unlike the old equal-split model, each compound gets a different
-    expected race life. Hard tyres naturally receive longer stints while
-    Soft tyres are prevented from becoming unrealistic 20+ lap race tyres.
+
+def effective_tyre_limits(country, compound):
+    """Return universal role-aware race-life limits.
+
+    C1-C6 are physical compounds; Hard/Medium/Soft are weekend roles.
+    The optimizer therefore uses broad role-aware envelopes rather than
+    treating every physical compound as having one permanent race life.
     """
+    tyre = TYRE_MODEL[compound]
 
+    if compound == "INT":
+        return (1, RACE_DEFAULTS[country]["laps"])
+
+    role = get_compound_role_index(country, compound)
+    stress = RACE_DEFAULTS[country]["stress"]
+    base_min = tyre.get("min_laps", 1)
+    base_max = tyre.get("max_laps", RACE_DEFAULTS[country]["laps"])
+
+    if role == 2:          # Soft
+        max_laps = min(24, base_max + max(0, int(round((1.0 - stress) * 8))))
+    elif role == 1:        # Medium
+        max_laps = base_max + 10 + max(0, int(round((1.0 - stress) * 6)))
+    else:                  # Hard
+        max_laps = base_max + 15 + max(0, int(round((1.0 - stress) * 8)))
+
+    max_laps = min(RACE_DEFAULTS[country]["laps"], max_laps)
+    return base_min, max(base_min, max_laps)
+
+
+def get_stint_target_laps(country, compound):
+    """Target a competitive stint length before alternatives are explored."""
+    tyre = TYRE_MODEL[compound]
+    min_laps, max_laps = effective_tyre_limits(country, compound)
+    role = get_compound_role_index(country, compound)
+
+    if role == 0:
+        target = tyre["peak_end"] + 0.70 * (tyre["critical_lap"] - tyre["peak_end"])
+    elif role == 1:
+        target = tyre["peak_end"] + 0.60 * (tyre["critical_lap"] - tyre["peak_end"])
+    else:
+        target = (
+            tyre["peak_end"]
+            + 0.50 * (tyre["critical_lap"] - tyre["peak_end"])
+            + max(0, (1.0 - RACE_DEFAULTS[country]["stress"]) * 6)
+        )
+
+    return max(min_laps, min(max_laps, target))
+
+
+def create_stints(total_laps, compounds, country=None):
+    """Create a valid race-length split using weekend tyre roles."""
     if not compounds:
         return []
+    if country is None:
+        country = next(iter(RACE_DEFAULTS))
 
-    # Expected useful race life used only to distribute laps. The actual
-    # lap-time model still decides whether a candidate is competitive.
-    target_life = {
-        compound: TYRE_MODEL[compound].get("target_laps",
-                                             (TYRE_MODEL[compound].get("min_laps", 10)
-                                              + TYRE_MODEL[compound].get("max_laps", 30)) / 2)
-        for compound in compounds
-    }
+    limits = [effective_tyre_limits(country, c) for c in compounds]
+    mins = [x[0] for x in limits]
+    maxs = [x[1] for x in limits]
 
-    total_target = sum(target_life.values())
-    raw = [total_laps * target_life[c] / total_target for c in compounds]
-    lengths = [max(1, int(round(x))) for x in raw]
+    if total_laps < sum(mins) or total_laps > sum(maxs):
+        return []
 
-    # Correct rounding while keeping the total exactly equal to race laps.
+    targets = [get_stint_target_laps(country, c) for c in compounds]
+    total_target = sum(targets)
+    lengths = [
+        max(mins[i], min(maxs[i], int(round(total_laps * targets[i] / total_target))))
+        for i in range(len(compounds))
+    ]
+
     while sum(lengths) < total_laps:
-        idx = max(range(len(lengths)), key=lambda i: target_life[compounds[i]] - lengths[i])
+        choices = [i for i in range(len(lengths)) if lengths[i] < maxs[i]]
+        if not choices:
+            return []
+        idx = max(choices, key=lambda i: targets[i] - lengths[i])
         lengths[idx] += 1
+
     while sum(lengths) > total_laps:
-        candidates = [i for i, n in enumerate(lengths) if n > 1]
-        idx = max(candidates, key=lambda i: lengths[i] - target_life[compounds[i]])
+        choices = [i for i in range(len(lengths)) if lengths[i] > mins[i]]
+        if not choices:
+            return []
+        idx = max(choices, key=lambda i: lengths[i] - targets[i])
         lengths[idx] -= 1
 
     return lengths
 
 
-def generate_stint_length_candidates(total_laps, compounds):
-    """Generate deterministic, realistic alternatives around the target split."""
+def generate_stint_length_candidates(total_laps, compounds, country=None):
+    """Generate deterministic alternatives around the realistic target split."""
+    if country is None:
+        country = next(iter(RACE_DEFAULTS))
 
-    base = create_stints(total_laps, compounds)
+    base = create_stints(total_laps, compounds, country)
+    if not base:
+        return []
+
     candidates = {tuple(base)}
+    limits = [effective_tyre_limits(country, c) for c in compounds]
+    mins = [x[0] for x in limits]
+    maxs = [x[1] for x in limits]
 
-    mins = [TYRE_MODEL[c].get("min_laps", 1) for c in compounds]
-    maxs = [TYRE_MODEL[c].get("max_laps", total_laps) for c in compounds]
-
-    # Move a small number of laps from one stint to another. This lets the
-    # optimizer discover long-Hard/short-Soft strategies without brute-forcing
-    # thousands of combinations.
     shifts = (-6, -4, -2, 2, 4, 6)
-
     for i in range(len(compounds)):
         for j in range(len(compounds)):
             if i == j:
@@ -1181,10 +1278,9 @@ def generate_stint_length_candidates(total_laps, compounds):
                 trial = base.copy()
                 trial[i] += shift
                 trial[j] -= shift
-                if all(mins[k] <= trial[k] <= maxs[k] for k in range(len(trial))) and sum(trial) == total_laps:
+                if all(mins[k] <= trial[k] <= maxs[k] for k in range(len(trial))):
                     candidates.add(tuple(trial))
 
-    # For 3- and 4-stint strategies, also allow two independent small moves.
     if len(compounds) >= 3:
         for i in range(len(compounds)):
             for j in range(len(compounds)):
@@ -1197,7 +1293,7 @@ def generate_stint_length_candidates(total_laps, compounds):
                     trial[i] += 4
                     trial[j] -= 2
                     trial[k] -= 2
-                    if all(mins[x] <= trial[x] <= maxs[x] for x in range(len(trial))) and sum(trial) == total_laps:
+                    if all(mins[x] <= trial[x] <= maxs[x] for x in range(len(trial))):
                         candidates.add(tuple(trial))
 
     return [list(x) for x in candidates]
@@ -1224,7 +1320,8 @@ def simulate_dry_strategy(
     if stint_lengths is None:
         stint_lengths = create_stints(
             race["laps"],
-            compounds
+            compounds,
+            country
         )
 
     total_time = 0.0
@@ -1372,15 +1469,19 @@ def optimize_dry_strategy(
 
         candidates = generate_stint_length_candidates(
             RACE_DEFAULTS[country]["laps"],
-            strategy["compounds"]
+            strategy["compounds"],
+            country
         )
 
         for stint_lengths in candidates:
             # Reject a compound sequence if any stint is outside its
             # realistic race-life envelope.
             valid = all(
-                TYRE_MODEL[c]["min_laps"] <= length <= TYRE_MODEL[c]["max_laps"]
-                for c, length in zip(strategy["compounds"], stint_lengths)
+                min_laps <= length <= max_laps
+                for (min_laps, max_laps), length in zip(
+                    [effective_tyre_limits(country, c) for c in strategy["compounds"]],
+                    stint_lengths
+                )
             )
             if not valid:
                 continue
