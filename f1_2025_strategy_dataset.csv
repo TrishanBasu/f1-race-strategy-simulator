@@ -1,0 +1,25 @@
+country,circuit,total_laps,base_race_pace_seconds,pit_stop_seconds,pirelli_stress_factor,hard_compound,medium_compound,soft_compound
+Australia,Albert Park,57,86.5,22.5,0.95,C3,C4,C5
+China,Shanghai,56,96.5,24.0,0.95,C2,C3,C4
+Japan,Suzuka,53,94.5,23.5,1.25,C1,C2,C3
+Bahrain,Bahrain,57,96.5,22.0,1.30,C1,C2,C3
+Saudi Arabia,Jeddah,50,92.5,21.0,0.90,C3,C4,C5
+Miami,Miami,57,91.5,22.3,0.90,C3,C4,C5
+Emilia-Romagna,Imola,63,87.5,23.5,1.00,C4,C5,C6
+Monaco,Monaco,78,80.5,24.5,0.85,C4,C5,C6
+Spain,Barcelona,66,82.5,22.2,1.15,C1,C2,C3
+Canada,Montreal,70,76.5,19.0,0.90,C4,C5,C6
+Austria,Red Bull Ring,70,72.0,20.0,0.95,C3,C4,C5
+Great Britain,Silverstone,52,95.0,29.0,1.20,C2,C3,C4
+Belgium,Spa-Francorchamps,44,110.0,23.5,1.15,C1,C3,C4
+Hungary,Hungaroring,70,80.0,20.0,1.10,C3,C4,C5
+Netherlands,Zandvoort,72,77.5,17.6,1.15,C2,C3,C4
+Italy,Monza,53,83.0,24.8,0.90,C3,C4,C5
+Azerbaijan,Baku,51,102.0,21.0,0.85,C4,C5,C6
+Singapore,Marina Bay,62,101.0,22.0,1.20,C3,C4,C5
+United States,COTA,56,99.0,21.5,1.00,C1,C3,C4
+Mexico,Mexico City,71,80.0,21.0,0.95,C2,C4,C5
+Brazil,Interlagos,71,75.5,23.5,1.05,C2,C3,C4
+Las Vegas,Las Vegas,50,96.5,21.5,0.85,C3,C4,C5
+Qatar,Lusail,57,90.0,30.0,1.35,C1,C2,C3
+Abu Dhabi,Yas Marina,58,89.0,22.0,0.95,C3,C4,C5
