@@ -1,5 +1,7 @@
+```python
 import streamlit as st
 import pandas as pd
+
 
 # ============================================================
 # PAGE CONFIG
@@ -12,8 +14,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+
 # ============================================================
-# F1 STYLE
+# F1 RED / BLACK THEME
 # ============================================================
 
 st.markdown("""
@@ -27,8 +30,18 @@ html, body, [class*="css"] {
 
 .stApp {
     background:
-        radial-gradient(circle at top right, rgba(225, 6, 0, 0.13), transparent 28%),
-        linear-gradient(135deg, #050505 0%, #0b0b0b 45%, #111111 100%);
+        radial-gradient(
+            circle at top right,
+            rgba(225, 6, 0, 0.13),
+            transparent 28%
+        ),
+        linear-gradient(
+            135deg,
+            #050505 0%,
+            #0b0b0b 45%,
+            #111111 100%
+        );
+
     color: #f5f5f5;
 }
 
@@ -38,10 +51,16 @@ html, body, [class*="css"] {
     max-width: 1400px;
 }
 
-/* Sidebar */
+
+/* SIDEBAR */
 
 section[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #090909 0%, #111111 100%);
+    background: linear-gradient(
+        180deg,
+        #090909 0%,
+        #111111 100%
+    );
+
     border-right: 1px solid #292929;
 }
 
@@ -49,7 +68,8 @@ section[data-testid="stSidebar"] * {
     color: #f2f2f2;
 }
 
-/* Main title */
+
+/* HEADER */
 
 .hero-title {
     font-size: 3.2rem;
@@ -73,6 +93,7 @@ section[data-testid="stSidebar"] * {
 .red-line {
     height: 4px;
     width: 100%;
+
     background: linear-gradient(
         90deg,
         #e10600 0%,
@@ -80,17 +101,27 @@ section[data-testid="stSidebar"] * {
         #303030 35%,
         #303030 100%
     );
+
     margin: 15px 0 25px 0;
 }
 
-/* Cards */
+
+/* CARDS */
 
 .f1-card {
-    background: linear-gradient(145deg, #151515, #0d0d0d);
+    background: linear-gradient(
+        145deg,
+        #151515,
+        #0d0d0d
+    );
+
     border: 1px solid #292929;
     border-left: 4px solid #e10600;
+
     border-radius: 10px;
+
     padding: 18px 20px;
+
     margin-bottom: 15px;
 }
 
@@ -104,40 +135,57 @@ section[data-testid="stSidebar"] * {
     color: #aaaaaa;
 }
 
-/* Section headers */
+
+/* SECTION HEADERS */
 
 .section-header {
     font-size: 1.45rem;
     font-weight: 800;
+
     margin-top: 30px;
     margin-bottom: 15px;
+
     border-left: 5px solid #e10600;
+
     padding-left: 12px;
 }
 
-/* Metrics */
+
+/* METRIC CARDS */
 
 .metric-card {
     background: #111111;
+
     border: 1px solid #2b2b2b;
+
     border-radius: 10px;
+
     padding: 18px;
+
     text-align: center;
+
     min-height: 115px;
 }
 
 .metric-label {
     color: #888888;
+
     font-size: 0.78rem;
+
     text-transform: uppercase;
+
     letter-spacing: 1px;
+
     font-weight: 700;
 }
 
 .metric-value {
     color: #ffffff;
+
     font-size: 1.65rem;
+
     font-weight: 900;
+
     margin-top: 7px;
 }
 
@@ -145,120 +193,141 @@ section[data-testid="stSidebar"] * {
     color: #e10600;
 }
 
-/* Winner */
+
+/* WINNER */
 
 .winner-card {
     background:
-        linear-gradient(135deg, rgba(225,6,0,0.18), rgba(10,10,10,0.96));
+        linear-gradient(
+            135deg,
+            rgba(225, 6, 0, 0.18),
+            rgba(10, 10, 10, 0.96)
+        );
+
     border: 1px solid #e10600;
+
     border-radius: 12px;
+
     padding: 24px;
+
     margin: 20px 0;
-    box-shadow: 0 0 30px rgba(225,6,0,0.08);
+
+    box-shadow:
+        0 0 30px rgba(225, 6, 0, 0.08);
 }
 
 .winner-title {
     color: #e10600;
+
     text-transform: uppercase;
+
     font-size: 0.85rem;
+
     font-weight: 800;
+
     letter-spacing: 1.5px;
 }
 
-.winner-strategy {
-    font-size: 2rem;
-    font-weight: 900;
-    color: white;
-    margin: 7px 0;
-}
 
-.winner-time {
-    color: #bdbdbd;
-    font-size: 1rem;
-}
-
-/* Info */
+/* INFO */
 
 .info-box {
     background: #111111;
+
     border: 1px solid #303030;
+
     border-radius: 9px;
+
     padding: 15px 18px;
+
     color: #bdbdbd;
 }
 
-/* Buttons */
+
+/* BUTTON */
 
 .stButton > button {
     background: #e10600 !important;
+
     color: white !important;
+
     border: none !important;
+
     border-radius: 7px !important;
+
     font-weight: 800 !important;
+
     min-height: 45px;
+
     transition: 0.2s ease;
 }
 
 .stButton > button:hover {
     background: #ff180f !important;
-    box-shadow: 0 0 18px rgba(225,6,0,0.35);
+
+    box-shadow:
+        0 0 18px rgba(225, 6, 0, 0.35);
+
     transform: translateY(-1px);
 }
 
-/* Inputs */
+
+/* INPUTS */
 
 div[data-baseweb="select"] > div {
     background-color: #171717;
+
     border-color: #353535;
 }
 
 .stNumberInput input {
     background-color: #171717 !important;
+
     color: white !important;
+
     border-color: #353535 !important;
 }
 
-/* Dataframe */
 
-div[data-testid="stDataFrame"] {
-    border: 1px solid #292929;
-    border-radius: 8px;
-}
-
-/* Expander */
-
-.streamlit-expanderHeader {
-    background: #111111 !important;
-    color: white !important;
-    border: 1px solid #292929;
-}
-
-/* Footer */
+/* FOOTER */
 
 .footer {
     text-align: center;
+
     color: #666666;
+
     font-size: 0.8rem;
+
     padding: 30px 0 10px 0;
 }
 
-/* Badge */
+
+/* BADGES */
 
 .badge {
     display: inline-block;
+
     padding: 5px 10px;
+
     border-radius: 20px;
+
     background: #242424;
+
     color: #dddddd;
+
     font-size: 0.75rem;
+
     font-weight: 700;
+
     margin-right: 5px;
 }
 
 .badge-red {
-    background: rgba(225,6,0,0.18);
+    background: rgba(225, 6, 0, 0.18);
+
     color: #ff4b45;
-    border: 1px solid rgba(225,6,0,0.4);
+
+    border: 1px solid rgba(225, 6, 0, 0.4);
 }
 
 </style>
@@ -272,9 +341,14 @@ div[data-testid="stDataFrame"] {
 @st.cache_data
 def load_dataset():
 
-    df = pd.read_csv("f1_2025_strategy_dataset.csv")
+    df = pd.read_csv(
+        "f1_2025_strategy_dataset.csv"
+    )
 
-    df.columns = [str(c).strip() for c in df.columns]
+    df.columns = [
+        str(c).strip()
+        for c in df.columns
+    ]
 
     return df
 
@@ -286,8 +360,10 @@ try:
 except Exception:
 
     st.error(
-        "Could not load f1_2025_strategy_dataset.csv. "
-        "Make sure the CSV is in the same GitHub repository as app.py."
+        "Could not load "
+        "f1_2025_strategy_dataset.csv. "
+        "Make sure the CSV is in the same "
+        "GitHub repository as app.py."
     )
 
     st.stop()
@@ -297,8 +373,8 @@ except Exception:
 # 2025 RACE DATA
 # ============================================================
 
-# Numerical pace, pit-loss and stress values are simulation
-# assumptions rather than official F1 measurements.
+# Numerical pace, pit-loss and circuit-stress values
+# are simulation assumptions, not official F1 measurements.
 
 RACE_DEFAULTS = {
 
@@ -500,13 +576,6 @@ RACE_DEFAULTS = {
 # TYRE MODEL
 # ============================================================
 
-# Internal compounds:
-#
-# C1 / C2 = HARD
-# C3 / C4 = MEDIUM
-# C5 / C6 = SOFT
-# INT      = INTERMEDIATE
-
 TYRE_MODEL = {
 
     "C1": {
@@ -582,7 +651,7 @@ TYRE_MODEL = {
 
 
 # ============================================================
-# CAR CLASSES
+# CAR PERFORMANCE CLASSES
 # ============================================================
 
 CLASS_DATA = {
@@ -653,7 +722,7 @@ PIRELLI_2025 = {
 
 
 # ============================================================
-# DISPLAY FUNCTIONS
+# DISPLAY HELPERS
 # ============================================================
 
 def tyre_name(compound):
@@ -666,7 +735,10 @@ def tyre_display_with_code(compound):
     if compound == "INT":
         return "Intermediate"
 
-    return f"{TYRE_MODEL[compound]['display']} ({compound})"
+    return (
+        f"{TYRE_MODEL[compound]['display']} "
+        f"({compound})"
+    )
 
 
 def strategy_display(strategy):
@@ -677,28 +749,32 @@ def strategy_display(strategy):
     )
 
 
-def simple_strategy_display(strategy):
-
-    return " → ".join(
-        tyre_name(x)
-        for x in strategy
-    )
-
-
 def format_time(seconds):
 
-    minutes = int(seconds // 60)
+    minutes = int(
+        seconds // 60
+    )
 
-    secs = seconds - minutes * 60
+    secs = (
+        seconds
+        - minutes * 60
+    )
 
     return f"{minutes}:{secs:05.2f}"
 
 
 def format_delta(seconds):
 
-    sign = "+" if seconds >= 0 else "-"
+    sign = (
+        "+"
+        if seconds >= 0
+        else "-"
+    )
 
-    return f"{sign}{abs(seconds):.2f}s"
+    return (
+        f"{sign}"
+        f"{abs(seconds):.2f}s"
+    )
 
 
 # ============================================================
@@ -711,23 +787,15 @@ def calculate_tyre_degradation(
     circuit_stress
 ):
 
-    """
-    Continuous tyre degradation model.
-
-    Applied to:
-        Hard
-        Medium
-        Soft
-        Intermediate
-    """
-
     tyre = TYRE_MODEL[compound]
 
     if tyre_age <= 0:
         return 0.0
 
     peak_start = tyre["peak_start"]
+
     peak_end = tyre["peak_end"]
+
     critical = tyre["critical_lap"]
 
     # -----------------------------
@@ -736,22 +804,35 @@ def calculate_tyre_degradation(
 
     if tyre_age <= peak_start:
 
-        raw = 0.018 * tyre_age
+        raw = (
+            0.018
+            * tyre_age
+        )
 
     # -----------------------------
-    # Peak performance
+    # Peak
     # -----------------------------
 
     elif tyre_age <= peak_end:
 
-        warmup = 0.018 * peak_start
+        warmup = (
+            0.018
+            * peak_start
+        )
 
-        extra_age = tyre_age - peak_start
+        extra_age = (
+            tyre_age
+            - peak_start
+        )
 
         raw = (
             warmup
-            + 0.012 * extra_age
-            + 0.004 * (extra_age ** 1.35)
+            + 0.012
+            * extra_age
+            + 0.004
+            * (
+                extra_age ** 1.35
+            )
         )
 
     # -----------------------------
@@ -760,13 +841,18 @@ def calculate_tyre_degradation(
 
     elif tyre_age <= critical:
 
-        peak_value = calculate_tyre_degradation(
-            compound,
-            peak_end,
-            1.0
+        peak_value = (
+            calculate_tyre_degradation(
+                compound,
+                peak_end,
+                1.0
+            )
         )
 
-        extra_age = tyre_age - peak_end
+        extra_age = (
+            tyre_age
+            - peak_end
+        )
 
         peak_length = max(
             critical - peak_end,
@@ -778,7 +864,9 @@ def calculate_tyre_degradation(
             + tyre["deg_rate"]
             * (
                 extra_age ** 1.28
-                / (peak_length ** 0.20)
+                / (
+                    peak_length ** 0.20
+                )
             )
         )
 
@@ -788,18 +876,25 @@ def calculate_tyre_degradation(
 
     else:
 
-        critical_value = calculate_tyre_degradation(
-            compound,
-            critical,
-            1.0
+        critical_value = (
+            calculate_tyre_degradation(
+                compound,
+                critical,
+                1.0
+            )
         )
 
-        extra_age = tyre_age - critical
+        extra_age = (
+            tyre_age
+            - critical
+        )
 
         raw = (
             critical_value
             + tyre["late_rate"]
-            * (extra_age ** 1.42)
+            * (
+                extra_age ** 1.42
+            )
         )
 
     return round(
@@ -835,7 +930,7 @@ def tyre_phase(
 
 
 # ============================================================
-# LAP TIME
+# LAP TIME MODEL
 # ============================================================
 
 def calculate_lap_time(
@@ -853,24 +948,23 @@ def calculate_lap_time(
 
     base = race["pace"]
 
-    car_delta = CLASS_DATA[
-        car_class
-    ]["pace_delta"]
+    car_delta = (
+        CLASS_DATA[car_class]["pace_delta"]
+    )
 
     tyre_delta = tyre["offset"]
 
-    degradation = calculate_tyre_degradation(
-        compound,
-        tyre_age,
-        race["stress"]
+    degradation = (
+        calculate_tyre_degradation(
+            compound,
+            tyre_age,
+            race["stress"]
+        )
     )
 
     rain_delta = 0.0
 
-    # -----------------------------
-    # Wet conditions
-    # -----------------------------
-
+    # Intermediate works best in wet conditions.
     if wet:
 
         if compound == "INT":
@@ -881,7 +975,7 @@ def calculate_lap_time(
 
             rain_delta = (
                 10.0
-                + (tyre_age * 0.08)
+                + tyre_age * 0.08
             )
 
     lap_time = (
@@ -892,10 +986,7 @@ def calculate_lap_time(
         + rain_delta
     )
 
-    # -----------------------------
-    # Previous lap smoothing
-    # -----------------------------
-
+    # Previous-lap smoothing.
     if previous_lap is not None:
 
         lap_time = (
@@ -907,7 +998,7 @@ def calculate_lap_time(
 
 
 # ============================================================
-# STRATEGY GENERATOR
+# DRY STRATEGY GENERATOR
 # ============================================================
 
 def generate_dry_strategies(country):
@@ -920,7 +1011,7 @@ def generate_dry_strategies(country):
     strategies = []
 
     # -----------------------------
-    # One stop
+    # 1 stop
     # -----------------------------
 
     for a in available:
@@ -938,7 +1029,7 @@ def generate_dry_strategies(country):
             )
 
     # -----------------------------
-    # Two stops
+    # 2 stops
     # -----------------------------
 
     for a in available:
@@ -952,13 +1043,17 @@ def generate_dry_strategies(country):
 
                 strategies.append(
                     {
-                        "compounds": [a, b, c],
+                        "compounds": [
+                            a,
+                            b,
+                            c
+                        ],
                         "stops": 2
                     }
                 )
 
     # -----------------------------
-    # Three stops
+    # 3 stops
     # -----------------------------
 
     for a in available:
@@ -969,12 +1064,23 @@ def generate_dry_strategies(country):
 
                 for d in available:
 
-                    if len({a, b, c, d}) < 2:
+                    if len({
+                        a,
+                        b,
+                        c,
+                        d
+                    }) < 2:
+
                         continue
 
                     strategies.append(
                         {
-                            "compounds": [a, b, c, d],
+                            "compounds": [
+                                a,
+                                b,
+                                c,
+                                d
+                            ],
                             "stops": 3
                         }
                     )
@@ -983,7 +1089,7 @@ def generate_dry_strategies(country):
 
 
 # ============================================================
-# STINT CREATION
+# STINT LENGTHS
 # ============================================================
 
 def create_stints(
@@ -991,11 +1097,19 @@ def create_stints(
     number_of_stops
 ):
 
-    stint_count = number_of_stops + 1
+    stint_count = (
+        number_of_stops + 1
+    )
 
-    base = total_laps // stint_count
+    base = (
+        total_laps
+        // stint_count
+    )
 
-    remainder = total_laps % stint_count
+    remainder = (
+        total_laps
+        % stint_count
+    )
 
     lengths = []
 
@@ -1004,6 +1118,7 @@ def create_stints(
         length = base
 
         if i < remainder:
+
             length += 1
 
         lengths.append(length)
@@ -1024,11 +1139,15 @@ def simulate_dry_strategy(
 
     race = RACE_DEFAULTS[country]
 
-    compounds = strategy["compounds"]
+    compounds = (
+        strategy["compounds"]
+    )
 
-    stint_lengths = create_stints(
-        race["laps"],
-        len(compounds) - 1
+    stint_lengths = (
+        create_stints(
+            race["laps"],
+            len(compounds) - 1
+        )
     )
 
     total_time = 0.0
@@ -1039,8 +1158,8 @@ def simulate_dry_strategy(
 
     current_lap = 0
 
-    # Small deterministic starting-position effect
-    start_factor = 0.0
+    # Small deterministic
+    # starting-position effect.
 
     if starting_position <= 3:
 
@@ -1050,11 +1169,17 @@ def simulate_dry_strategy(
 
         start_factor = 0.10
 
-    for stint_index, compound in enumerate(compounds):
+    else:
 
-        stint_length = stint_lengths[
-            stint_index
-        ]
+        start_factor = 0.0
+
+    for stint_index, compound in enumerate(
+        compounds
+    ):
+
+        stint_length = (
+            stint_lengths[stint_index]
+        )
 
         for age in range(
             1,
@@ -1064,11 +1189,11 @@ def simulate_dry_strategy(
             current_lap += 1
 
             lap_time = calculate_lap_time(
-                country=country,
-                compound=compound,
-                tyre_age=age,
-                car_class=car_class,
-                previous_lap=previous_lap,
+                country,
+                compound,
+                age,
+                car_class,
+                previous_lap,
                 wet=False
             )
 
@@ -1081,7 +1206,9 @@ def simulate_dry_strategy(
             lap_records.append(
                 {
                     "Lap": current_lap,
-                    "Tyre": tyre_name(compound),
+                    "Tyre": tyre_name(
+                        compound
+                    ),
                     "Compound": compound,
                     "Tyre Age": age,
                     "Phase": tyre_phase(
@@ -1099,22 +1226,40 @@ def simulate_dry_strategy(
             previous_lap = lap_time
 
         # Pit stop
-        if stint_index < len(compounds) - 1:
+        if (
+            stint_index
+            < len(compounds) - 1
+        ):
 
-            total_time += race["pit_loss"]
+            total_time += (
+                race["pit_loss"]
+            )
 
             lap_records.append(
                 {
-                    "Lap": f"Pit {stint_index + 1}",
-                    "Tyre": "PIT STOP",
-                    "Compound": "-",
-                    "Tyre Age": "-",
-                    "Phase": "-",
-                    "Lap Time (s)": round(
-                        race["pit_loss"],
-                        3
-                    ),
-                    "Condition": "Pit"
+                    "Lap":
+                        f"Pit {stint_index + 1}",
+
+                    "Tyre":
+                        "PIT STOP",
+
+                    "Compound":
+                        "-",
+
+                    "Tyre Age":
+                        "-",
+
+                    "Phase":
+                        "-",
+
+                    "Lap Time (s)":
+                        round(
+                            race["pit_loss"],
+                            3
+                        ),
+
+                    "Condition":
+                        "Pit"
                 }
             )
 
@@ -1138,32 +1283,37 @@ def optimize_dry_strategy(
     starting_position
 ):
 
-    strategies = generate_dry_strategies(
-        country
+    strategies = (
+        generate_dry_strategies(
+            country
+        )
     )
 
     results = []
 
     for strategy in strategies:
 
-        result = simulate_dry_strategy(
-            country=country,
-            strategy=strategy,
-            car_class=car_class,
-            starting_position=starting_position
+        result = (
+            simulate_dry_strategy(
+                country,
+                strategy,
+                car_class,
+                starting_position
+            )
         )
 
         results.append(result)
 
     results.sort(
-        key=lambda x: x["total_time"]
+        key=lambda x:
+        x["total_time"]
     )
 
     return results
 
 
 # ============================================================
-# RAIN LAPS
+# RAIN DURATION → LAPS
 # ============================================================
 
 def calculate_rain_laps(
@@ -1176,11 +1326,13 @@ def calculate_rain_laps(
     lap_seconds = race["pace"]
 
     rain_seconds = (
-        rain_duration_minutes * 60
+        rain_duration_minutes
+        * 60
     )
 
     rain_laps = (
-        rain_seconds / lap_seconds
+        rain_seconds
+        / lap_seconds
     )
 
     return max(
@@ -1202,9 +1354,11 @@ def generate_rain_windows(
 
     total_laps = race["laps"]
 
-    rain_laps = calculate_rain_laps(
-        country,
-        rain_duration_minutes
+    rain_laps = (
+        calculate_rain_laps(
+            country,
+            rain_duration_minutes
+        )
     )
 
     rain_laps = min(
@@ -1222,9 +1376,13 @@ def generate_rain_windows(
 
         return [
             {
-                "name": "Full-race rain window",
+                "name":
+                    "Full-race rain window",
+
                 "start": 1,
-                "end": total_laps
+
+                "end":
+                    total_laps
             }
         ]
 
@@ -1248,8 +1406,9 @@ def generate_rain_windows(
         start = int(
             round(
                 1
-                + (max_start - 1)
-                * ratio
+                + (
+                    max_start - 1
+                ) * ratio
             )
         )
 
@@ -1262,7 +1421,9 @@ def generate_rain_windows(
         )
 
         end = min(
-            start + rain_laps - 1,
+            start
+            + rain_laps
+            - 1,
             total_laps
         )
 
@@ -1280,7 +1441,130 @@ def generate_rain_windows(
 
 
 # ============================================================
-# RAIN SCENARIO
+# BUILD ACTUAL RAIN STRATEGY DISPLAY
+# ============================================================
+
+def build_rain_strategy_display(
+    dry_strategy,
+    rain_start,
+    rain_end,
+    total_laps
+):
+
+    compounds = (
+        dry_strategy["compounds"]
+    )
+
+    # If there is no rain, simply show
+    # the dry strategy.
+
+    if rain_start is None:
+
+        return compounds
+
+    # ---------------------------------------------
+    # Rain starts on Lap 1
+    # ---------------------------------------------
+
+    if rain_start == 1:
+
+        actual = ["INT"]
+
+        # If rain ends before race ends,
+        # return to the first dry tyre.
+
+        if rain_end < total_laps:
+
+            actual.append(
+                compounds[0]
+            )
+
+        return actual
+
+    # ---------------------------------------------
+    # Rain starts later
+    # ---------------------------------------------
+
+    actual = []
+
+    # Determine which dry tyre was active
+    # when rain started.
+
+    dry_stint_lengths = create_stints(
+        total_laps,
+        len(compounds) - 1
+    )
+
+    accumulated = 0
+
+    current_compound = compounds[0]
+
+    current_index = 0
+
+    for i, stint_length in enumerate(
+        dry_stint_lengths
+    ):
+
+        accumulated += stint_length
+
+        if rain_start <= accumulated:
+
+            current_index = i
+
+            current_compound = compounds[i]
+
+            break
+
+    actual.append(
+        current_compound
+    )
+
+    # Intermediate stint.
+
+    actual.append("INT")
+
+    # ---------------------------------------------
+    # Return to dry tyres
+    # ---------------------------------------------
+
+    if rain_end < total_laps:
+
+        # Pick the dry tyre that would be
+        # appropriate for the remaining race.
+
+        progress = (
+            rain_end
+            / total_laps
+        )
+
+        index = int(
+            progress
+            * len(compounds)
+        )
+
+        index = min(
+            index,
+            len(compounds) - 1
+        )
+
+        dry_after_rain = compounds[index]
+
+        # Avoid duplicate consecutive tyres.
+
+        if (
+            dry_after_rain
+            != actual[-1]
+        ):
+
+            actual.append(
+                dry_after_rain
+            )
+
+    return actual
+
+
+# ============================================================
+# RAIN SCENARIO SIMULATION
 # ============================================================
 
 def simulate_rain_scenario(
@@ -1309,15 +1593,32 @@ def simulate_rain_scenario(
 
     lap_records = []
 
-    pitted_for_rain = False
-
-    returned_from_rain = False
+    # Track dry tyre state.
 
     current_dry_index = 0
 
     current_dry_age = 0
 
-    int_age = 0
+    intermediate_age = 0
+
+    pitted_for_rain = False
+
+    returned_from_rain = False
+
+    # Actual strategy shown to user.
+
+    actual_strategy = (
+        build_rain_strategy_display(
+            dry_strategy,
+            rain_start,
+            rain_end,
+            race["laps"]
+        )
+    )
+
+    # --------------------------------------------------------
+    # LAP-BY-LAP SIMULATION
+    # --------------------------------------------------------
 
     for lap in range(
         1,
@@ -1339,6 +1640,9 @@ def simulate_rain_scenario(
             and not pitted_for_rain
         ):
 
+            # If rain starts after Lap 1,
+            # pit for Intermediate.
+
             if lap > 1:
 
                 total_time += (
@@ -1347,24 +1651,39 @@ def simulate_rain_scenario(
 
                 lap_records.append(
                     {
-                        "Lap": "Pit → Intermediate",
-                        "Tyre": "PIT STOP",
-                        "Compound": "-",
-                        "Tyre Age": "-",
-                        "Phase": "-",
-                        "Lap Time (s)": round(
-                            race["pit_loss"],
-                            3
-                        ),
-                        "Condition": "Rain"
+                        "Lap":
+                            "Pit → Intermediate",
+
+                        "Tyre":
+                            "PIT STOP",
+
+                        "Compound":
+                            "-",
+
+                        "Tyre Age":
+                            "-",
+
+                        "Phase":
+                            "-",
+
+                        "Lap Time (s)":
+                            round(
+                                race["pit_loss"],
+                                3
+                            ),
+
+                        "Condition":
+                            "Rain"
                     }
                 )
 
+            pitted_for_rain = True
+
+            intermediate_age = 1
+
             current_compound = "INT"
 
-            int_age = 1
-
-            pitted_for_rain = True
+            tyre_age = intermediate_age
 
         # ====================================================
         # CONTINUE ON INTERMEDIATE
@@ -1377,14 +1696,18 @@ def simulate_rain_scenario(
 
             current_compound = "INT"
 
-            int_age = (
+            intermediate_age = (
                 lap
                 - rain_start
                 + 1
             )
 
+            tyre_age = (
+                intermediate_age
+            )
+
         # ====================================================
-        # RAIN ENDS
+        # RAIN HAS ENDED
         # ====================================================
 
         elif (
@@ -1394,29 +1717,48 @@ def simulate_rain_scenario(
             and lap > rain_end
         ):
 
+            # Pit back to dry tyres.
+
             total_time += (
                 race["pit_loss"]
             )
 
             lap_records.append(
                 {
-                    "Lap": "Pit → Dry",
-                    "Tyre": "PIT STOP",
-                    "Compound": "-",
-                    "Tyre Age": "-",
-                    "Phase": "-",
-                    "Lap Time (s)": round(
-                        race["pit_loss"],
-                        3
-                    ),
-                    "Condition": "Dry"
+                    "Lap":
+                        "Pit → Dry",
+
+                    "Tyre":
+                        "PIT STOP",
+
+                    "Compound":
+                        "-",
+
+                    "Tyre Age":
+                        "-",
+
+                    "Phase":
+                        "-",
+
+                    "Lap Time (s)":
+                        round(
+                            race["pit_loss"],
+                            3
+                        ),
+
+                    "Condition":
+                        "Dry"
                 }
             )
 
             returned_from_rain = True
 
+            # Choose dry tyre according
+            # to remaining race distance.
+
             progress = (
-                lap / race["laps"]
+                lap
+                / race["laps"]
             )
 
             index = int(
@@ -1439,61 +1781,88 @@ def simulate_rain_scenario(
                 ]
             )
 
+            tyre_age = current_dry_age
+
         # ====================================================
         # NORMAL DRY RUNNING
         # ====================================================
 
         else:
 
-            current_compound = (
-                dry_compounds[
-                    min(
-                        current_dry_index,
-                        len(dry_compounds) - 1
-                    )
-                ]
-            )
-
-            current_dry_age += 1
-
             accumulated = 0
+
+            selected_index = 0
+
+            selected_age = 1
 
             for i, stint_length in enumerate(
                 dry_stints
             ):
 
-                accumulated += (
-                    stint_length
-                )
+                if lap <= (
+                    accumulated
+                    + stint_length
+                ):
 
-                if lap <= accumulated:
+                    selected_index = i
 
-                    current_dry_index = i
-
-                    current_compound = (
-                        dry_compounds[i]
-                    )
-
-                    previous_stints = sum(
-                        dry_stints[:i]
-                    )
-
-                    current_dry_age = (
+                    selected_age = (
                         lap
-                        - previous_stints
+                        - accumulated
                     )
 
                     break
 
-        # ====================================================
-        # TYRE AGE
-        # ====================================================
+                accumulated += (
+                    stint_length
+                )
 
-        if current_compound == "INT":
+            # After rain, use selected
+            # post-rain dry compound.
 
-            tyre_age = int_age
+            if returned_from_rain:
 
-        else:
+                progress = (
+                    lap
+                    / race["laps"]
+                )
+
+                selected_index = int(
+                    progress
+                    * len(dry_compounds)
+                )
+
+                selected_index = min(
+                    selected_index,
+                    len(dry_compounds) - 1
+                )
+
+                # Restart age from Lap after rain.
+
+                post_rain_start = (
+                    rain_end + 1
+                )
+
+                selected_age = max(
+                    1,
+                    lap
+                    - post_rain_start
+                    + 1
+                )
+
+            current_dry_index = (
+                selected_index
+            )
+
+            current_dry_age = (
+                selected_age
+            )
+
+            current_compound = (
+                dry_compounds[
+                    current_dry_index
+                ]
+            )
 
             tyre_age = current_dry_age
 
@@ -1510,7 +1879,9 @@ def simulate_rain_scenario(
             wet=is_wet
         )
 
-        # Dry tyres on wet track
+        # Extra penalty for dry tyres
+        # on a wet track.
+
         if (
             is_wet
             and current_compound != "INT"
@@ -1523,24 +1894,36 @@ def simulate_rain_scenario(
         lap_records.append(
             {
                 "Lap": lap,
-                "Tyre": tyre_name(
-                    current_compound
-                ),
-                "Compound": current_compound,
-                "Tyre Age": tyre_age,
-                "Phase": tyre_phase(
+
+                "Tyre":
+                    tyre_name(
+                        current_compound
+                    ),
+
+                "Compound":
                     current_compound,
-                    tyre_age
-                ),
-                "Lap Time (s)": round(
-                    lap_time,
-                    3
-                ),
-                "Condition": (
-                    "Wet"
-                    if is_wet
-                    else "Dry"
-                )
+
+                "Tyre Age":
+                    tyre_age,
+
+                "Phase":
+                    tyre_phase(
+                        current_compound,
+                        tyre_age
+                    ),
+
+                "Lap Time (s)":
+                    round(
+                        lap_time,
+                        3
+                    ),
+
+                "Condition":
+                    (
+                        "Wet"
+                        if is_wet
+                        else "Dry"
+                    )
             }
         )
 
@@ -1548,12 +1931,23 @@ def simulate_rain_scenario(
 
     return {
         "total_time": total_time,
-        "rain_start": rain_start,
-        "rain_end": rain_end,
-        "strategy": dry_strategy,
-        "laps": pd.DataFrame(
-            lap_records
-        )
+
+        "strategy":
+            dry_strategy,
+
+        "actual_strategy":
+            actual_strategy,
+
+        "rain_start":
+            rain_start,
+
+        "rain_end":
+            rain_end,
+
+        "laps":
+            pd.DataFrame(
+                lap_records
+            )
     }
 
 
@@ -1575,7 +1969,9 @@ def optimize_rain_strategy(
         starting_position
     )
 
-    # Use best dry strategies as candidates.
+    # Use the best dry strategies as
+    # candidates for the rain simulations.
+
     candidates = dry_results[:8]
 
     windows = generate_rain_windows(
@@ -1585,7 +1981,10 @@ def optimize_rain_strategy(
 
     scenarios = []
 
-    # 50% means rain may happen OR may not happen.
+    # --------------------------------------------------------
+    # 50% RAIN
+    # --------------------------------------------------------
+
     if rain_percentage == "50% Rain":
 
         scenarios.append(
@@ -1596,14 +1995,22 @@ def optimize_rain_strategy(
             }
         )
 
-    # 100% means rain is guaranteed.
+    # --------------------------------------------------------
+    # Rain scenarios
+    # --------------------------------------------------------
+
     for window in windows:
 
         scenarios.append(
             {
-                "name": window["name"],
-                "start": window["start"],
-                "end": window["end"]
+                "name":
+                    window["name"],
+
+                "start":
+                    window["start"],
+
+                "end":
+                    window["end"]
             }
         )
 
@@ -1611,9 +2018,9 @@ def optimize_rain_strategy(
 
     for scenario in scenarios:
 
-        # ---------------------------------------------
-        # No-rain branch
-        # ---------------------------------------------
+        # ====================================================
+        # NO RAIN
+        # ====================================================
 
         if scenario["start"] is None:
 
@@ -1621,45 +2028,76 @@ def optimize_rain_strategy(
 
             results.append(
                 {
-                    "scenario": scenario["name"],
-                    "rain_start": None,
-                    "rain_end": None,
-                    "total_time": best["total_time"],
-                    "strategy": best["strategy"],
-                    "laps": best["laps"]
+                    "scenario":
+                        scenario["name"],
+
+                    "rain_start":
+                        None,
+
+                    "rain_end":
+                        None,
+
+                    "total_time":
+                        best["total_time"],
+
+                    "strategy":
+                        best["strategy"],
+
+                    "actual_strategy":
+                        best["strategy"]["compounds"],
+
+                    "laps":
+                        best["laps"]
                 }
             )
 
-        # ---------------------------------------------
-        # Rain branches
-        # ---------------------------------------------
+        # ====================================================
+        # RAIN
+        # ====================================================
 
         else:
 
             for candidate in candidates:
 
-                result = simulate_rain_scenario(
-                    country=country,
-                    car_class=car_class,
-                    starting_position=starting_position,
-                    rain_start=scenario["start"],
-                    rain_end=scenario["end"],
-                    dry_strategy=candidate["strategy"]
+                result = (
+                    simulate_rain_scenario(
+                        country,
+                        car_class,
+                        starting_position,
+                        scenario["start"],
+                        scenario["end"],
+                        candidate["strategy"]
+                    )
                 )
 
                 results.append(
                     {
-                        "scenario": scenario["name"],
-                        "rain_start": scenario["start"],
-                        "rain_end": scenario["end"],
-                        "total_time": result["total_time"],
-                        "strategy": result["strategy"],
-                        "laps": result["laps"]
+                        "scenario":
+                            scenario["name"],
+
+                        "rain_start":
+                            scenario["start"],
+
+                        "rain_end":
+                            scenario["end"],
+
+                        "total_time":
+                            result["total_time"],
+
+                        "strategy":
+                            result["strategy"],
+
+                        "actual_strategy":
+                            result["actual_strategy"],
+
+                        "laps":
+                            result["laps"]
                     }
                 )
 
     results.sort(
-        key=lambda x: x["total_time"]
+        key=lambda x:
+        x["total_time"]
     )
 
     return results
@@ -1670,7 +2108,9 @@ def optimize_rain_strategy(
 # ============================================================
 
 st.markdown(
-    '<div class="hero-title">F1 <span>RACE STRATEGY</span> SIMULATOR</div>',
+    '<div class="hero-title">'
+    'F1 <span>RACE STRATEGY</span> SIMULATOR'
+    '</div>',
     unsafe_allow_html=True
 )
 
@@ -1813,6 +2253,7 @@ with col1:
     st.markdown(
         f"""
         <div class="metric-card">
+
             <div class="metric-label">
                 Grand Prix
             </div>
@@ -1820,6 +2261,7 @@ with col1:
             <div class="metric-value">
                 {country}
             </div>
+
         </div>
         """,
         unsafe_allow_html=True
@@ -1830,6 +2272,7 @@ with col2:
     st.markdown(
         f"""
         <div class="metric-card">
+
             <div class="metric-label">
                 Starting Position
             </div>
@@ -1837,6 +2280,7 @@ with col2:
             <div class="metric-value">
                 P{starting_position}
             </div>
+
         </div>
         """,
         unsafe_allow_html=True
@@ -1847,6 +2291,7 @@ with col3:
     st.markdown(
         f"""
         <div class="metric-card">
+
             <div class="metric-label">
                 Car Class
             </div>
@@ -1854,6 +2299,7 @@ with col3:
             <div class="metric-value">
                 {car_class}
             </div>
+
         </div>
         """,
         unsafe_allow_html=True
@@ -1861,18 +2307,23 @@ with col3:
 
 with col4:
 
-    condition_display = (
-        "Dry"
-        if rain_option == "No Rain"
-        else rain_option.replace(
-            " Rain",
-            ""
+    if rain_option == "No Rain":
+
+        condition_display = "Dry"
+
+    else:
+
+        condition_display = (
+            rain_option.replace(
+                " Rain",
+                ""
+            )
         )
-    )
 
     st.markdown(
         f"""
         <div class="metric-card">
+
             <div class="metric-label">
                 Conditions
             </div>
@@ -1880,6 +2331,7 @@ with col4:
             <div class="metric-value metric-red">
                 {condition_display}
             </div>
+
         </div>
         """,
         unsafe_allow_html=True
@@ -1893,7 +2345,9 @@ with col4:
 if not run_simulation:
 
     st.markdown(
-        '<div class="section-header">How the simulator works</div>',
+        '<div class="section-header">'
+        'How the simulator works'
+        '</div>',
         unsafe_allow_html=True
     )
 
@@ -1946,8 +2400,8 @@ if not run_simulation:
 
                 <p>
                 Intermediate tyres are used during wet
-                conditions and are also affected by tyre age
-                and degradation.
+                conditions and also experience tyre
+                degradation.
                 </p>
 
             </div>
@@ -1955,12 +2409,14 @@ if not run_simulation:
             unsafe_allow_html=True
         )
 
-    # ---------------------------------------------
-    # Tyres
-    # ---------------------------------------------
+    # --------------------------------------------------------
+    # TYRE SELECTION
+    # --------------------------------------------------------
 
     st.markdown(
-        '<div class="section-header">2025 Tyre Selection</div>',
+        '<div class="section-header">'
+        '2025 Tyre Selection'
+        '</div>',
         unsafe_allow_html=True
     )
 
@@ -1996,12 +2452,14 @@ if not run_simulation:
         unsafe_allow_html=True
     )
 
-    # ---------------------------------------------
-    # Model
-    # ---------------------------------------------
+    # --------------------------------------------------------
+    # SIMULATION MODEL
+    # --------------------------------------------------------
 
     st.markdown(
-        '<div class="section-header">Simulation Model</div>',
+        '<div class="section-header">'
+        'Simulation Model'
+        '</div>',
         unsafe_allow_html=True
     )
 
@@ -2013,11 +2471,12 @@ if not run_simulation:
 
         <br><br>
 
-        <b>Tyre degradation is applied to all tyre types:</b>
+        <b>Tyre degradation is applied to:</b>
 
         <br><br>
 
-        🟥 <b>Soft</b> — fastest initial pace, shorter useful life
+        🟥 <b>Soft</b> — fastest initial pace,
+        shorter useful life
 
         <br>
 
@@ -2025,15 +2484,16 @@ if not run_simulation:
 
         <br>
 
-        ⚪ <b>Hard</b> — slower initial pace, longest dry-tyre life
+        ⚪ <b>Hard</b> — slower initial pace,
+        longest dry-tyre life
 
         <br>
 
-        🟢 <b>Intermediate</b> — designed for wet conditions
+        🟢 <b>Intermediate</b> — wet conditions
 
         <br><br>
 
-        The model also considers circuit stress, car class,
+        The model considers circuit stress, car class,
         tyre age and previous-lap pace.
 
         <br><br>
@@ -2048,7 +2508,7 @@ if not run_simulation:
 
 
 # ============================================================
-# SIMULATION
+# RUN SIMULATION
 # ============================================================
 
 if run_simulation:
@@ -2058,138 +2518,92 @@ if run_simulation:
     ):
 
         # ====================================================
-        # DRY
+        # DRY SIMULATION
         # ====================================================
 
         if rain_option == "No Rain":
 
             results = optimize_dry_strategy(
-                country=country,
-                car_class=car_class,
-                starting_position=starting_position
+                country,
+                car_class,
+                starting_position
             )
 
             best = results[0]
 
             st.markdown(
-                '<div class="section-header">🏆 Recommended Strategy</div>',
+                '<div class="section-header">'
+                '🏆 Recommended Strategy'
+                '</div>',
                 unsafe_allow_html=True
             )
 
-            # IMPORTANT:
-            # This uses HTML only for the outer card.
-            # Strategy and time are normal Streamlit Markdown,
-            # preventing raw HTML from appearing.
-
-            st.markdown(
-                """
-                <div class="winner-card">
-
-                    <div class="winner-title">
-                        FASTEST SIMULATED STRATEGY
-                    </div>
-
-                </div>
-                """,
-                unsafe_allow_html=True
+            st.success(
+                "🏁 FASTEST SIMULATED STRATEGY"
             )
 
             st.markdown(
-                f"## 🏁 {strategy_display(best['strategy']['compounds'])}"
+                f"## 🏎️ "
+                f"{strategy_display(best['strategy']['compounds'])}"
             )
 
             st.markdown(
-                f"""
-                **Simulated race time:** `{format_time(best['total_time'])}`
-                """
+                f"**Simulated race time:** "
+                f"`{format_time(best['total_time'])}`"
             )
 
-            # ---------------------------------------------
-            # Metrics
-            # ---------------------------------------------
+            # ------------------------------------------------
+            # METRICS
+            # ------------------------------------------------
 
             m1, m2, m3, m4 = st.columns(4)
 
             with m1:
 
-                st.markdown(
-                    f"""
-                    <div class="metric-card">
-                        <div class="metric-label">
-                            Pit Stops
-                        </div>
-
-                        <div class="metric-value">
-                            {best["strategy"]["stops"]}
-                        </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
+                st.metric(
+                    "Pit Stops",
+                    best["strategy"]["stops"]
                 )
 
             with m2:
 
-                st.markdown(
-                    f"""
-                    <div class="metric-card">
-                        <div class="metric-label">
-                            Race Time
-                        </div>
-
-                        <div class="metric-value">
-                            {format_time(best["total_time"])}
-                        </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
+                st.metric(
+                    "Race Time",
+                    format_time(
+                        best["total_time"]
+                    )
                 )
 
             with m3:
 
-                st.markdown(
-                    f"""
-                    <div class="metric-card">
-                        <div class="metric-label">
-                            Circuit
-                        </div>
-
-                        <div class="metric-value">
-                            {country}
-                        </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
+                st.metric(
+                    "Circuit",
+                    country
                 )
 
             with m4:
 
-                st.markdown(
-                    f"""
-                    <div class="metric-card">
-                        <div class="metric-label">
-                            Car
-                        </div>
-
-                        <div class="metric-value">
-                            {car_class}
-                        </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
+                st.metric(
+                    "Car Class",
+                    car_class
                 )
 
-            # ---------------------------------------------
-            # Strategy comparison
-            # ---------------------------------------------
+            # ------------------------------------------------
+            # STRATEGY COMPARISON
+            # ------------------------------------------------
 
             st.markdown(
-                '<div class="section-header">Strategy Comparison</div>',
+                '<div class="section-header">'
+                'Strategy Comparison'
+                '</div>',
                 unsafe_allow_html=True
             )
 
             comparison_rows = []
 
-            best_time = best["total_time"]
+            best_time = (
+                best["total_time"]
+            )
 
             for i, result in enumerate(
                 results[:10]
@@ -2197,18 +2611,28 @@ if run_simulation:
 
                 comparison_rows.append(
                     {
-                        "Rank": i + 1,
+                        "Rank":
+                            i + 1,
 
-                        "Strategy": strategy_display(
-                            result["strategy"]["compounds"]
-                        ),
+                        "Strategy":
+                            strategy_display(
+                                result[
+                                    "strategy"
+                                ][
+                                    "compounds"
+                                ]
+                            ),
 
                         "Pit Stops":
-                            result["strategy"]["stops"],
+                            result[
+                                "strategy"
+                            ]["stops"],
 
                         "Simulated Time":
                             format_time(
-                                result["total_time"]
+                                result[
+                                    "total_time"
+                                ]
                             ),
 
                         "Gap":
@@ -2216,7 +2640,9 @@ if run_simulation:
                                 "BEST"
                                 if i == 0
                                 else format_delta(
-                                    result["total_time"]
+                                    result[
+                                        "total_time"
+                                    ]
                                     - best_time
                                 )
                             )
@@ -2231,12 +2657,14 @@ if run_simulation:
                 hide_index=True
             )
 
-            # ---------------------------------------------
-            # Lap data
-            # ---------------------------------------------
+            # ------------------------------------------------
+            # LAP DATA
+            # ------------------------------------------------
 
             st.markdown(
-                '<div class="section-header">Lap-by-Lap Simulation</div>',
+                '<div class="section-header">'
+                'Lap-by-Lap Simulation'
+                '</div>',
                 unsafe_allow_html=True
             )
 
@@ -2248,29 +2676,31 @@ if run_simulation:
             )
 
         # ====================================================
-        # RAIN
+        # RAIN SIMULATION
         # ====================================================
 
         else:
 
             results = optimize_rain_strategy(
-                country=country,
-                car_class=car_class,
-                starting_position=starting_position,
-                rain_duration_minutes=rain_duration,
-                rain_percentage=rain_option
+                country,
+                car_class,
+                starting_position,
+                rain_duration,
+                rain_option
             )
 
             best = results[0]
 
             st.markdown(
-                '<div class="section-header">🌧️ Rain Strategy Result</div>',
+                '<div class="section-header">'
+                '🌧️ Rain Strategy Result'
+                '</div>',
                 unsafe_allow_html=True
             )
 
-            # ---------------------------------------------
-            # Rain window
-            # ---------------------------------------------
+            # ------------------------------------------------
+            # RAIN WINDOW
+            # ------------------------------------------------
 
             if best["rain_start"] is None:
 
@@ -2279,131 +2709,138 @@ if run_simulation:
             else:
 
                 rain_text = (
-                    f"Lap {best['rain_start']} – "
-                    f"Lap {best['rain_end']}"
+                    f"Lap "
+                    f"{best['rain_start']}"
+                    f" – "
+                    f"{best['rain_end']}"
                 )
 
-            # ---------------------------------------------
-            # Winner card
-            # ---------------------------------------------
+            # ------------------------------------------------
+            # WINNER
+            # ------------------------------------------------
 
-            st.markdown(
-                """
-                <div class="winner-card">
-
-                    <div class="winner-title">
-                        BEST SIMULATED RAIN SCENARIO
-                    </div>
-
-                </div>
-                """,
-                unsafe_allow_html=True
+            st.success(
+                "🏆 BEST SIMULATED RAIN SCENARIO"
             )
 
             # IMPORTANT:
-            # Normal Markdown here prevents raw HTML
-            # from appearing in the browser.
+            # This uses the actual rain strategy,
+            # including Intermediate.
 
             st.markdown(
-                f"## 🏁 {strategy_display(best['strategy']['compounds'])}"
+                f"## 🏁 "
+                f"{strategy_display(best['actual_strategy'])}"
             )
 
             st.markdown(
-                f"""
-                **Rain window:** `{rain_text}`
-
-                **Simulated race time:** `{format_time(best['total_time'])}`
-                """
+                f"**Rain window:** "
+                f"`{rain_text}`"
             )
 
-            # ---------------------------------------------
-            # Rain metrics
-            # ---------------------------------------------
+            st.markdown(
+                f"**Simulated race time:** "
+                f"`{format_time(best['total_time'])}`"
+            )
+
+            # ------------------------------------------------
+            # METRICS
+            # ------------------------------------------------
 
             r1, r2, r3, r4 = st.columns(4)
 
             with r1:
 
-                st.markdown(
-                    f"""
-                    <div class="metric-card">
-
-                        <div class="metric-label">
-                            Rain Duration
-                        </div>
-
-                        <div class="metric-value">
-                            {rain_duration} min
-                        </div>
-
-                    </div>
-                    """,
-                    unsafe_allow_html=True
+                st.metric(
+                    "Rain Duration",
+                    f"{rain_duration} min"
                 )
 
             with r2:
 
-                st.markdown(
-                    f"""
-                    <div class="metric-card">
-
-                        <div class="metric-label">
-                            Rain Window
-                        </div>
-
-                        <div class="metric-value">
-                            {rain_text}
-                        </div>
-
-                    </div>
-                    """,
-                    unsafe_allow_html=True
+                st.metric(
+                    "Rain Window",
+                    rain_text
                 )
 
             with r3:
 
-                st.markdown(
-                    f"""
-                    <div class="metric-card">
-
-                        <div class="metric-label">
-                            Strategy
-                        </div>
-
-                        <div class="metric-value">
-                            {best["strategy"]["stops"]} Stops
-                        </div>
-
-                    </div>
-                    """,
-                    unsafe_allow_html=True
+                st.metric(
+                    "Strategy",
+                    (
+                        f"{len(best['actual_strategy']) - 1}"
+                        " Stops"
+                    )
                 )
 
             with r4:
 
-                st.markdown(
-                    f"""
-                    <div class="metric-card">
-
-                        <div class="metric-label">
-                            Race Time
-                        </div>
-
-                        <div class="metric-value">
-                            {format_time(best["total_time"])}
-                        </div>
-
-                    </div>
-                    """,
-                    unsafe_allow_html=True
+                st.metric(
+                    "Race Time",
+                    format_time(
+                        best["total_time"]
+                    )
                 )
 
-            # ---------------------------------------------
-            # Scenario comparison
-            # ---------------------------------------------
+            # ------------------------------------------------
+            # ACTUAL STRATEGY
+            # ------------------------------------------------
 
             st.markdown(
-                '<div class="section-header">Rain Scenario Comparison</div>',
+                '<div class="section-header">'
+                'Recommended Race Strategy'
+                '</div>',
+                unsafe_allow_html=True
+            )
+
+            strategy_cols = st.columns(
+                len(
+                    best["actual_strategy"]
+                )
+            )
+
+            for i, compound in enumerate(
+                best["actual_strategy"]
+            ):
+
+                with strategy_cols[i]:
+
+                    st.markdown(
+                        f"""
+                        <div class="f1-card"
+                             style="text-align:center;">
+
+                            <h3>
+                                Stint {i + 1}
+                            </h3>
+
+                            <div style="
+                                font-size:1.4rem;
+                                font-weight:900;
+                                color:#ffffff;
+                            ">
+                                {tyre_name(compound)}
+                            </div>
+
+                            <div style="
+                                color:#888;
+                                margin-top:5px;
+                            ">
+                                {compound}
+                            </div>
+
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
+
+            # ------------------------------------------------
+            # RAIN SCENARIO COMPARISON
+            # ------------------------------------------------
+
+            st.markdown(
+                '<div class="section-header">'
+                'Rain Scenario Comparison'
+                '</div>',
                 unsafe_allow_html=True
             )
 
@@ -2411,7 +2848,9 @@ if run_simulation:
 
             for result in results:
 
-                scenario = result["scenario"]
+                scenario = (
+                    result["scenario"]
+                )
 
                 if (
                     scenario not in scenario_best
@@ -2435,14 +2874,19 @@ if run_simulation:
                 scenario_best.items()
             ):
 
-                if result["rain_start"] is None:
+                if (
+                    result["rain_start"]
+                    is None
+                ):
 
                     window = "No rain"
 
                 else:
 
                     window = (
-                        f"Lap {result['rain_start']}–"
+                        f"Lap "
+                        f"{result['rain_start']}"
+                        f"–"
                         f"{result['rain_end']}"
                     )
 
@@ -2456,20 +2900,32 @@ if run_simulation:
 
                         "Strategy":
                             strategy_display(
-                                result["strategy"]["compounds"]
+                                result[
+                                    "actual_strategy"
+                                ]
                             ),
 
                         "Pit Stops":
-                            result["strategy"]["stops"],
+                            (
+                                len(
+                                    result[
+                                        "actual_strategy"
+                                    ]
+                                ) - 1
+                            ),
 
                         "Simulated Time":
                             format_time(
-                                result["total_time"]
+                                result[
+                                    "total_time"
+                                ]
                             ),
 
                         "Gap":
                             format_delta(
-                                result["total_time"]
+                                result[
+                                    "total_time"
+                                ]
                                 - global_best_time
                             )
                     }
@@ -2483,12 +2939,14 @@ if run_simulation:
                 hide_index=True
             )
 
-            # ---------------------------------------------
-            # Lap analysis
-            # ---------------------------------------------
+            # ------------------------------------------------
+            # LAP ANALYSIS
+            # ------------------------------------------------
 
             st.markdown(
-                '<div class="section-header">Best Scenario — Lap Analysis</div>',
+                '<div class="section-header">'
+                'Best Scenario — Lap Analysis'
+                '</div>',
                 unsafe_allow_html=True
             )
 
@@ -2499,61 +2957,47 @@ if run_simulation:
                 height=500
             )
 
-            # ---------------------------------------------
-            # Rain logic
-            # ---------------------------------------------
+            # ------------------------------------------------
+            # RAIN LOGIC
+            # ------------------------------------------------
 
             st.markdown(
-                '<div class="section-header">Rain Strategy Logic</div>',
+                '<div class="section-header">'
+                'Rain Strategy Logic'
+                '</div>',
                 unsafe_allow_html=True
             )
 
-            st.markdown(
-                f"""
-                <div class="f1-card">
-
-                <b>Rain probability setting:</b>
-                {rain_option}
-
-                <br><br>
-
-                <b>Rain duration:</b>
-                {rain_duration} minutes
-
-                <br><br>
-
-                Approximately
-                <b>
-                {calculate_rain_laps(
+            estimated_rain_laps = (
+                calculate_rain_laps(
                     country,
                     rain_duration
-                )}
-                racing laps
-                </b>
+                )
+            )
 
-                <br><br>
+            st.info(
+                f"""
+                **Rain probability:** {rain_option}
 
-                The simulator tests deterministic representative
-                rain windows rather than generating random weather.
+                **Rain duration:** {rain_duration} minutes
 
-                <br><br>
+                **Estimated rain duration:**
+                approximately {estimated_rain_laps}
+                racing laps.
 
-                When the track becomes wet, the model switches
-                to <b>Intermediate tyres</b>.
+                The simulator tests deterministic
+                representative rain windows instead of
+                generating random weather.
 
-                <br><br>
+                When the track becomes wet, the model
+                switches to **Intermediate tyres**.
 
-                Intermediate tyres also have their own
-                tyre-age and degradation model.
-
-                <br><br>
+                Intermediate tyres have their own tyre-age
+                and degradation model.
 
                 Therefore degradation is modelled for
-                <b>Hard, Medium, Soft and Intermediate</b> tyres.
-
-                </div>
-                """,
-                unsafe_allow_html=True
+                **Hard, Medium, Soft and Intermediate** tyres.
+                """
             )
 
 
@@ -2569,13 +3013,14 @@ with st.expander(
         """
         ### 2025 Data
 
-        The simulator uses the 2025 F1 calendar, race distances
-        and 2025 Pirelli dry-tyre nominations.
+        The simulator uses the 2025 F1 calendar,
+        race distances and 2025 Pirelli dry-tyre
+        nominations.
 
         ### Tyre Display
 
-        The technical Pirelli compounds are simplified for
-        viewer readability:
+        The technical compounds are simplified
+        for viewer readability:
 
         | Internal compound | Viewer display |
         |---|---|
@@ -2586,9 +3031,6 @@ with st.expander(
         | C5 | Soft |
         | C6 | Soft |
         | INT | Intermediate |
-
-        The application shows the simple tyre name first while
-        retaining the compound code where useful.
 
         ### Tyre degradation
 
@@ -2631,23 +3073,25 @@ with st.expander(
 
         ### Pit stops
 
-        Pit-stop losses are circuit-specific simulation
-        assumptions.
+        Pit-stop losses are circuit-specific
+        simulation assumptions.
 
         ### Rain
 
-        Rain windows are deterministic representative scenarios.
+        Rain windows are deterministic representative
+        scenarios.
 
         They are not weather forecasts.
 
         ### Important
 
-        This project is a strategy simulation.
+        This is a strategy simulation rather than a
+        prediction engine.
 
         Numerical pace, tyre degradation, circuit stress,
-        car-class differences and pit-stop losses are simplified
-        modelling assumptions and should not be interpreted as
-        official F1 performance measurements.
+        car-class differences and pit-stop losses are
+        simplified modelling assumptions and should not
+        be interpreted as official F1 performance measurements.
         """
     )
 
@@ -2660,10 +3104,12 @@ st.markdown(
     """
     <div class="footer">
 
-        F1 Race Strategy Simulator • 2025 Data •
+        F1 Race Strategy Simulator •
+        2025 Data •
         Python + Pandas + Streamlit
 
     </div>
     """,
     unsafe_allow_html=True
 )
+```
